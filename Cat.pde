@@ -30,6 +30,7 @@ class Cat{
     body.createFixture(fd);
     
     body.setUserData(this);
+    //fd.setUserData("Cat");
     
     //body.createFixture(cat_body,1.0);
   }

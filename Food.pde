@@ -38,11 +38,11 @@ class Food{
     body.createFixture(cs,1.0);
     
     body.setUserData(this);
+    //fd.setUserData("Food");
   }
   void run(){
     update();
     display();
-    killBody();
   }
   
   void update(){
@@ -50,6 +50,9 @@ class Food{
     location.add(velocity);
     acceleration.mulLocal(0);
     lifespan -= 0.8;
+    if(lifespan <= 0){
+      box2d.destroyBody(body);
+    }
   }
   
   void display(){
@@ -72,21 +75,23 @@ class Food{
     body.applyForce(force,pos);
   }
   
-  void eaten(){
-    lifespan = 0;
-    killBody();
+  boolean isExpired(){
+    if(lifespan <= 0.0){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
-  
-  void killBody(){
-    if(lifespan == 0){
-      try{
-        box2d.world.destroyBody(body);
 
-      }
-      catch(AssertionError e){
-        //e.printStackTrace();
-      }
+  void killBody(){
+    lifespan = 0;
+    try{
+      box2d.world.destroyBody(body);
+    }
+    catch(AssertionError e){
       
-    }    
+    }
+
   }
 }

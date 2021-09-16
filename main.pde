@@ -6,9 +6,9 @@ import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.*;
-
+import java.util.Iterator;
 Box2DProcessing box2d;
-ArrayList<Food> food;
+ArrayList<Food> foods;
 Cat cat;
 Food f;
 Boundary floor;
@@ -24,7 +24,7 @@ void setup(){
   box2d.setGravity(0,-9.8);
   wind = new Vec2(random(-3.8,-3.8),0);
   cat = new Cat();
-  food = new ArrayList<Food>();
+  foods = new ArrayList<Food>();
   floor = new Boundary(width/2,height+100,width,height);// x,y,w,h location and size
   wall_L = new Boundary(0,0,10,height*2);
   wall_R = new Boundary(width,0,10,height*2);
@@ -42,22 +42,20 @@ void draw(){
   cat.run();
   cat.applyForce(move);
   
-  for(Food f : food){
+  Iterator<Food> it = foods.iterator();
+  while (it.hasNext()) {
+    Food f = it.next();
     f.run();
-    f.killBody();
-    f.applyForce(wind);
+    if (f.isExpired()) {
+      it.remove();
+    }
   }
-  try{
-    f.killBody();
-  }
-  catch(Exception e){
-    
-  }
+  
 }
 
 void mousePressed(){
   f = new Food();
-  food.add(f);
+  foods.add(f);
 }
 
 void beginContact(Contact cp){
@@ -71,17 +69,22 @@ void beginContact(Contact cp){
   Object o2 = b2.getUserData();
   
   if(o1.getClass() == Cat.class && o2.getClass() == Food.class){
-    //Cat c = (Cat) o1;
+    //Cat c = (Cat) o2;
     Food f = (Food) o2;
-    f.eaten();
+    f.killBody();
   }
 }
 
 void endContact(Contact cp){
+  
+}
+
+void removeContact(Contact cp){
 
 }
 
-//void keyPressed(){
-//  if(key == 'k'){
-//    f.killBody();
-//  }
+void keyPressed(){
+  if(key == 'k'){
+    f.killBody();
+  }
+}
