@@ -5,12 +5,13 @@ class Cat{
   //Vec2 acceleration;
   Vec2 move;
   float r;
+  color col = color(175);
   
   Cat(){
     r = 10;
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;
-    location = bd.position.set(box2d.coordPixelsToWorld(random(width),random(height-200,height/2)));
+    location = bd.position.set(box2d.coordPixelsToWorld(random(width),random(height-300,height/2)));
     //velocity = new Vec2(100,0);
     //acceleration = new Vec2(0,0);
     move = new Vec2(random(-100,100),0);
@@ -27,16 +28,22 @@ class Cat{
     fd.friction = 0.3;
     fd.restitution = 0.5;
     
-    body.createFixture(fd);
-    
+    body.createFixture(fd);    
+    //body.createFixture(cat_body,1.0);
     body.setUserData(this);
     //fd.setUserData("Cat");
-    
-    //body.createFixture(cat_body,1.0);
   }
   void run(){
     //update();
     display();
+  }
+  
+  void upSize(){
+    r+=1;
+    if(r>=15){
+      col = color(0,255,0);
+      r=15;
+    }
   }
   
   void applyForce(Vec2 force){
@@ -59,8 +66,8 @@ class Cat{
     rectMode(CENTER);
     pushMatrix();
     translate(pos.x,pos.y);
-    rotate(-a);
-    fill(175);
+    //rotate(-a);
+    fill(col);
     stroke(0);
     strokeWeight(2);
     ellipse(0,0,r*2,r*2);

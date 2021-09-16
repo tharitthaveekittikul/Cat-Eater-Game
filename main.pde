@@ -15,6 +15,7 @@ Boundary floor;
 Boundary wall_L;
 Boundary wall_R;
 Vec2 wind;
+int count = 0;
 
 void setup(){
   size(480,800);
@@ -48,7 +49,7 @@ void draw(){
     f.run();
     f.applyForce(wind);
     if(keyPressed){
-      if(key == 'k'){
+      if(key == 'k'){ //reset food
         f.killBody();
       }
     }
@@ -75,7 +76,11 @@ void beginContact(Contact cp){
   Object o2 = b2.getUserData();
   
   if(o1.getClass() == Cat.class && o2.getClass() == Food.class){
-    //Cat c = (Cat) o2;
+    Cat c = (Cat) o1;
+    count+=1;
+    if(count%4 == 3){
+      c.upSize();
+    }
     Food f = (Food) o2;
     f.killBody();
   }
