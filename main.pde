@@ -31,7 +31,7 @@ void setup(){
 }
 void draw(){
   wind = new Vec2(random(-10,10),0);
-  Vec2 move = new Vec2(random(-300,300),random(10,30));
+  Vec2 move = new Vec2(random(-300,300),random(15,30));
   //println(move);
   box2d.step();
   background(255);
@@ -47,6 +47,11 @@ void draw(){
     Food f = it.next();
     f.run();
     f.applyForce(wind);
+    if(keyPressed){
+      if(key == 'k'){
+        f.killBody();
+      }
+    }
     if (f.isExpired()) {
       it.remove();
     }
@@ -84,8 +89,8 @@ void removeContact(Contact cp){
 
 }
 
-void keyPressed(){
-  if(key == 'k'){
-    f.killBody();
-  }
-}
+//void keyPressed(){
+//  if(key == 'k'){
+//    f.killBody();
+//  }
+//}
