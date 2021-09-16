@@ -17,12 +17,11 @@ Boundary wall_R;
 Vec2 wind;
 
 void setup(){
-  size(500,500);
+  size(480,800);
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   box2d.listenForCollisions();
   box2d.setGravity(0,-9.8);
-  wind = new Vec2(random(-3.8,-3.8),0);
   cat = new Cat();
   foods = new ArrayList<Food>();
   floor = new Boundary(width/2,height+100,width,height);// x,y,w,h location and size
@@ -31,6 +30,7 @@ void setup(){
   
 }
 void draw(){
+  wind = new Vec2(random(-10,10),0);
   Vec2 move = new Vec2(random(-300,300),random(10,30));
   //println(move);
   box2d.step();
@@ -46,6 +46,7 @@ void draw(){
   while (it.hasNext()) {
     Food f = it.next();
     f.run();
+    f.applyForce(wind);
     if (f.isExpired()) {
       it.remove();
     }
